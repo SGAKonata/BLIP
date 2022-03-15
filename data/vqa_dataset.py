@@ -46,7 +46,7 @@ class vqa_dataset(Dataset):
         elif ann['dataset']=='vg':
             image_path = os.path.join(self.vg_root,ann['image'])  
             
-        print("image_path", image_path)
+        # print("image_path", image_path) "/export/share/datasets/vision/VQA/Images/mscoco/test2015/COCO_test2015_000000262144.jpg"
         image = Image.open(image_path).convert('RGB')
         image = self.transform(image)          
         
