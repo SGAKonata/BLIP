@@ -1,4 +1,4 @@
-vqa_root: '/export/share/datasets/vision/VQA/Images/mscoco/' #followed by train2014/
+vqa_root: '/export/share/datasets/vision/VQA/Images/mscoco/' #followed by train2014/, image_root: '/content/BLIP/dataset/coco/images'
 vg_root: '/export/share/datasets/vision/visual-genome/'  #followed by image/
 train_files: ['vqa_train','vqa_val','vg_qa']
 ann_root: 'annotation'
@@ -23,3 +23,4 @@ inference: 'rank'
 weight_decay: 0.05
 min_lr: 0
 max_epoch: 10
+
