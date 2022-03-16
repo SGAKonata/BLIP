@@ -22,12 +22,29 @@ class nlvr_dataset(Dataset):
         filenames = {'train':'nlvr_train.json','val':'nlvr_dev.json','test':'nlvr_test.json'}
         
         download_url(urls[split],ann_root)
+
         self.annotation = json.load(open(os.path.join(ann_root,filenames[split]),'r'))
-        
+
         self.transform = transform
         self.image_root = image_root
 
-        
+        if split != 'train':
+            self.annotation = self.clean_data(self.annotation)
+
+    def clean_data(self, annotation):
+        print('cleaning data')
+        count = 0
+        new_annotation = []
+        for ann in annotation:
+            try:
+                Image.open(os.path.join(self.image_root, ann['images'][0]))
+                Image.open(os.path.join(self.image_root, ann['images'][1]))
+                new_annotation.append(ann)
+            except:
+                count += 1
+        print(f'{count} pairs removed')
+        return new_annotation
+
     def __len__(self):
         return len(self.annotation)
     
