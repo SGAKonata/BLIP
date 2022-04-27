@@ -50,10 +50,6 @@ def save_result(result, result_dir, filename, remove_duplicate=''):
     
     json.dump(result,open(result_file,'w'))
     
-    try:
-        dist.barrier()
-    except:
-        pass
 
     if utils.is_main_process():   
         # combine results from all processes
