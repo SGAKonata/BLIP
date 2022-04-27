@@ -166,8 +166,7 @@ def main(args, config):
                 'epoch': epoch,
             }
             torch.save(save_obj, os.path.join(args.output_dir, 'checkpoint_%02d.pth'%epoch))  
-
-        dist.barrier()         
+    
 
     vqa_result = evaluation(model_without_ddp, test_loader, device, config)        
     result_file = save_result(vqa_result, args.result_dir, 'vqa_result')  
