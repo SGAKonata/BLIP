@@ -18,20 +18,16 @@ class vqa_dataset(Dataset):
         self.vg_root = vg_root
         
         if split=='train':
-            urls = {'vqa_train':'https://storage.googleapis.com/sfr-vision-language-research/datasets/vqa_train.json',
-                    'vqa_val':'https://storage.googleapis.com/sfr-vision-language-research/datasets/vqa_val.json',
-                    'vg_qa':'https://storage.googleapis.com/sfr-vision-language-research/datasets/vg_qa.json'}
+            urls = {'vqa_train':'/content/BLIP/clef/ImageClef-2019-VQA-Med-Training/train.json',
+                    'vqa_val':'/content/BLIP/clef/ImageClef-2019-VQA-Med-Validation/val.json'}
         
             self.annotation = []
             for f in train_files:
-                download_url(urls[f],ann_root)
-                self.annotation += json.load(open(os.path.join(ann_root,'%s.json'%f),'r'))
+                self.annotation += json.load(open(urls[f],'r'))
         else:
-            download_url('https://storage.googleapis.com/sfr-vision-language-research/datasets/vqa_test.json',ann_root)
-            self.annotation = json.load(open(os.path.join(ann_root,'vqa_test.json'),'r'))[:1000] 
+            self.annotation = json.load(open('/content/BLIP/clef/VQAMed2019Test/test.json','r'))
             
-            download_url('https://storage.googleapis.com/sfr-vision-language-research/datasets/answer_list.json',ann_root)
-            self.answer_list = json.load(open(os.path.join(ann_root,'answer_list.json'),'r'))[:1000]    
+            self.answer_list = json.load(open('/content/BLIP/clef/VQAMed2019Test/answer_list.json','r'))    
                 
         
     def __len__(self):
@@ -41,13 +37,9 @@ class vqa_dataset(Dataset):
         
         ann = self.annotation[index]
         
-        if ann['dataset']=='vqa':
-            image_path = os.path.join(self.vqa_root,ann['image'])    
-        elif ann['dataset']=='vg':
-            image_path = os.path.join(self.vg_root,ann['image'])  
+        image_path = ann['image']
             
-        # print("image_path", image_path) "/export/share/datasets/vision/VQA/Images/mscoco/test2015/COCO_test2015_000000262144.jpg"
-        image = Image.open(image_path).convert('RGB')
+        image = Image.open(image_path).convert('RGB')   
         image = self.transform(image)          
         
         if self.split == 'test':
@@ -86,4 +78,4 @@ def vqa_collate_fn(batch):
         weight_list += weights       
         answer_list += answer
         n.append(len(answer))
-    return torch.stack(image_list,dim=0), question_list, answer_list, torch.Tensor(weight_list), n        
+    return torch.stack(image_list,dim=0), question_list, answer_list, torch.Tensor(weight_list), n 
