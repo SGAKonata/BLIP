@@ -160,12 +160,9 @@ class BLIP_VQA(nn.Module):
         
         log_probs_sum = -output.loss
         log_probs_sum = log_probs_sum.view(num_ques,k)
-        print("log_probs_sum:", log_probs_sum)
 
         max_topk_ids = log_probs_sum.argmax(dim=1)
-        print("max_topk_ids:", max_topk_ids)
         max_ids = topk_ids[max_topk_ids>=0,max_topk_ids]
-        print("max_ids:", max_ids)
 
         return max_ids
     
