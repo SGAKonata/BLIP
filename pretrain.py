@@ -111,12 +111,15 @@ def main(args, config):
     if args.checkpoint:    
         checkpoint = torch.load(args.checkpoint, map_location='cpu') 
         state_dict = checkpoint['model']    
-        model.load_state_dict(state_dict)    
-        
-        optimizer.load_state_dict(checkpoint['optimizer'])
-        start_epoch = checkpoint['epoch']+1                
-        print('resume checkpoint from %s'%args.checkpoint)    
-    
+        model.load_state_dict(state_dict)
+
+        try:
+            optimizer.load_state_dict(checkpoint['optimizer'])
+            start_epoch = checkpoint['epoch'] + 1
+            print('resume checkpoint from %s' % args.checkpoint)
+        except KeyError:
+            print('resume checkpoint from %s at epoch 0' % args.checkpoint)
+
     model_without_ddp = model
     if args.distributed:
         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
