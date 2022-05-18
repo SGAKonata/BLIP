@@ -93,7 +93,7 @@ def main(args, config):
 
     #### Dataset #### 
     print("Creating captioning dataset")
-    train_dataset, val_dataset, test_dataset = create_dataset('caption_coco', config)  
+    train_dataset, val_dataset, test_dataset = create_dataset(args.dataset, config)
 
     if args.distributed:
         num_tasks = utils.get_world_size()
@@ -192,6 +192,7 @@ if __name__ == '__main__':
     parser.add_argument('--world_size', default=1, type=int, help='number of distributed processes')    
     parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
     parser.add_argument('--distributed', default=True, type=bool)
+    parser.add_argument('--dataset', default='caption_coco')
     args = parser.parse_args()
 
     config = yaml.load(open(args.config, 'r'), Loader=yaml.Loader)
