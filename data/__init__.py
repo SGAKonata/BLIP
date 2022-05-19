@@ -41,7 +41,7 @@ def create_dataset(dataset, config, min_scale=0.5):
         return train_dataset, val_dataset, test_dataset
 
     elif dataset == 'caption_roco':
-        train_dataset = roco_train(transform_train, config['image_root'], 'train')
+        train_dataset = roco_train(transform_train, config['image_root'], prompt=config['prompt'])
         val_dataset = roco_eval(transform_test, config['image_root'], 'val')
         test_dataset = roco_eval(transform_test, config['image_root'], 'test')
         return train_dataset, val_dataset, test_dataset
