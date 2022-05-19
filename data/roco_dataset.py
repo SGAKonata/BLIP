@@ -1,5 +1,6 @@
 import os
 import json
+import re
 
 from torch.utils.data import Dataset
 from torchvision.datasets.utils import download_url
@@ -69,7 +70,7 @@ class roco_eval(Dataset):
         image = Image.open(image_path).convert('RGB')
         image = self.transform(image)
 
-        img_id = ann['image'].split('/')[-1].strip('.jpg').split('_')[-1]
+        img_id = re.search(r'PMC\d+_', ann['image'])[0][3:-1]
 
         return image, int(img_id)
 
