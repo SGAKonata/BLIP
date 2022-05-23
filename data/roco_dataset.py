@@ -15,7 +15,7 @@ class roco_train(Dataset):
         """
         dataset_root (string): Root directory of dataset (e.g. dataset/roco)
         """
-        filename = 'train_roco.json'
+        filename = 'train_caption.json'
 
 
         self.annotation = json.load(open(os.path.join(dataset_root, filename), 'r'))
@@ -54,7 +54,7 @@ class roco_eval(Dataset):
         dataset_root (string): Root directory of dataset (e.g. dataset/roco)
         split (string): val or test
         """
-        filenames = {'val': 'val_roco.json', 'test': 'test_roco.json'}
+        filenames = {'val': 'val_caption.json', 'test': 'test_caption.json'}
 
         self.annotation = json.load(open(os.path.join(dataset_root, filenames[split]), 'r'))
         self.transform = transform
