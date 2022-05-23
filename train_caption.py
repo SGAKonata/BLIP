@@ -26,7 +26,7 @@ from models.blip import blip_decoder
 import utils
 from utils import cosine_lr_schedule
 from data import create_dataset, create_sampler, create_loader
-from data.utils import save_result, coco_caption_eval
+from data.utils import save_result, coco_caption_eval, roco_caption_eval
 
 def train(model, data_loader, optimizer, epoch, device):
     # train
@@ -141,10 +141,15 @@ def main(args, config):
         test_result = evaluate(model_without_ddp, test_loader, device, config)  
         test_result_file = save_result(test_result, args.result_dir, 'test_epoch%d'%epoch, remove_duplicate='image_id')  
 
-        if utils.is_main_process():   
-            coco_val = coco_caption_eval(config['coco_gt_root'],val_result_file,'val')
-            coco_test = coco_caption_eval(config['coco_gt_root'],test_result_file,'test')
-            
+        if utils.is_main_process():
+            if args.dataset == 'caption_coco':
+                coco_val = coco_caption_eval(config['coco_gt_root'],val_result_file,'val')
+                coco_test = coco_caption_eval(config['coco_gt_root'],test_result_file,'test')
+            elif args.dataset == 'caption_roco':
+                coco_val = roco_caption_eval(config['coco_gt_root'], val_result_file, 'val')
+                coco_test = roco_caption_eval(config['coco_gt_root'], test_result_file, 'test')
+            else:
+                raise 'dataset error'
             if args.evaluate:            
                 log_stats = {**{f'val_{k}': v for k, v in coco_val.eval.items()},
                              **{f'test_{k}': v for k, v in coco_test.eval.items()},                       
