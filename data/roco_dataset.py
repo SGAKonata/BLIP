@@ -70,7 +70,7 @@ class roco_eval(Dataset):
         image = Image.open(image_path).convert('RGB')
         image = self.transform(image)
 
-        img_id = re.search(r'PMC\d+_', ann['image'])[0][3:-1]
+        img_id = ann['image_id']
 
         return image, int(img_id)
 
