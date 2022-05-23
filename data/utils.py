@@ -116,7 +116,7 @@ def coco_caption_eval(coco_gt_root, results_file, split):
 
 def roco_caption_eval(coco_gt_root, results_file, split):
 
-    filenames = {'val': 'val_roco.json', 'test': 'test_roco.json'}
+    filenames = {'val': 'val_ann.json', 'test': 'test_ann.json'}
 
     annotation_file = os.path.join(coco_gt_root, filenames[split])
 
